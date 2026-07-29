@@ -41,20 +41,26 @@ No hard contradictions between `APP_SPEC.md` and `UI_DESIGN_BRIEF.md`/`IMPLEMENT
 
 **Recommendation: Direction A.** It scores higher on the two criteria most likely to affect real usage — readability for a 7-year-old and non-punitive tone — while being at parity or better on APK weight and Godot feasibility. Direction B's dashboard framing is a reasonable idea if Toán + Tiếng Việt modules need to share one screen later, but that is not a Phase 1 requirement, so it does not outweigh A's readability and tone advantages today. No token changes are proposed as part of this recommendation; `docs/design/design-tokens.json` already encodes Direction A.
 
+## Decisions confirmed by owner (2026-07-30)
+
+| ID | Decision | Confirmed answer | Impact |
+|---|---|---|---|
+| UIR-001 | Final public app name | **Final: Hành Trình Sao Toán.** Not a working title — locked in. | Logo, store listing |
+| UIR-003 | Final mascot appearance/voice gender | Neutral visual/voice direction confirmed as good enough for now; specific illustration and voice casting deferred to asset production, not a design-approval blocker. | Illustration and recording |
+| UIR-004 | Exact low-end Android test device | Deferred to the Godot/QA phase — doesn't affect the web prototype. Placeholder (Android 8/API 26, 2GB RAM) stays until then. | Performance and asset budget, later phase |
+| UIR-005 | Whether quiz answers allow leading zero | Normalize `07` to `7`. Already the actual behavior (`parseInt(currentDigits, 10)` in `app.js` parses "07" as 7 with no octal ambiguity) — no code change needed. | Keypad behavior |
+| UIR-006 | Adult-area entry: hold-only vs hold-or-math-challenge | Hold 3 seconds only (Phase 1). Math-challenge alternative explicitly declined for now. | DES-01/DES-10 |
+| UIR-009 | Does 2nd-attempt-correct count toward 8/10? | No — only 1st-attempt-correct counts; 2nd-attempt-correct still unblocks continuation. This is a scoring/learning-rule decision, confirmed by the owner rather than assumed. | QuizGate scoring, DES-10 accuracy stats |
+| UIR-010 | Star-reward formula for a passed gate | 8/10=1★, 9/10=2★, 10/10=3★ (linear mapping) | DES-08 |
+| UIR-023 | Is the DES-10 "design QA tools" button an acceptable way to make DES-11 clickable? | Yes — kept as-is. Confirmed acceptable since it's clearly labeled non-production and is the only way to demo DES-11 without real file I/O. | DES-10, DES-11 |
+
 ## Open decisions
 
 | ID | Decision | Default if unanswered | Impact |
 |---|---|---|---|
-| UIR-001 | Final public app name | Hành Trình Sao Toán | Logo and store listing |
-| UIR-002 | Approve visual Direction A or choose B | Direction A (see comparison above) | Art style and component tone |
-| UIR-003 | Final mascot appearance/voice gender | Neutral visual and warm neutral voice | Illustration and recording |
-| UIR-004 | Exact low-end Android test device | Android 8/API 26, 2 GB RAM baseline | Performance and asset budget |
-| UIR-005 | Whether quiz answers allow leading zero | Normalize `07` to `7` | Keypad behavior |
-| UIR-006 | Adult-area entry: hold-only vs hold-or-math-challenge | Hold 3 seconds only (Phase 1) | DES-01/DES-10 |
+| UIR-002 | Approve visual Direction A or choose B | Direction A (see comparison above) — already approved by the owner for the vertical-slice and full-expansion passes | Art style and component tone |
 | UIR-007 | Mascot presence during live gameplay | Hidden during DES-04, shown elsewhere | DES-04 layout |
-| UIR-008 | Level-10 (final) pass state content | Deferred, not built this slice | DES-08/DES-02 |
-| UIR-009 | Does 2nd-attempt-correct count toward 8/10? | No — only 1st-attempt-correct counts; 2nd-attempt-correct still unblocks continuation | QuizGate scoring |
-| UIR-010 | Star-reward formula for a passed gate | 8/10=1★, 9/10=2★, 10/10=3★ | DES-08 |
+| UIR-008 | Level-10 (final) pass state content | Resolved via UIR-020 (distinct "hoàn thành mọi vùng đất" copy, no next-level teaser) | DES-08/DES-02 |
 
 ## Prototype scope note (vertical-slice pass)
 
