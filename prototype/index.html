@@ -49,6 +49,15 @@
     </button>
   </section>
 
+  <section id="screen-map" class="screen" aria-label="Bản đồ các màn chơi">
+    <div class="map-topbar">
+      <button type="button" class="icon-btn" id="btn-map-back" aria-label="Về menu chính">🏠</button>
+      <h1 class="map-title" tabindex="-1">Bản đồ hành trình</h1>
+      <span class="map-topbar-spacer" aria-hidden="true"></span>
+    </div>
+    <div class="map-route" id="map-route"></div>
+  </section>
+
   <section id="screen-gameplay" class="screen" aria-label="Bay Nhặt Sao — màn chơi">
     <div class="hud" role="toolbar" aria-label="Thanh trạng thái màn chơi">
       <div class="hud-stars" aria-live="polite">
@@ -63,13 +72,13 @@
     <div class="playfield" id="playfield">
       <div class="lane-track">
         <div class="lane" data-lane="0">
-          <div class="obstacle" data-kind="rock" style="--pos:62%"></div>
+          <button type="button" class="obstacle" data-kind="rock" data-hit="false" style="--pos:62%" aria-label="Vật cản — chạm để xem phản hồi va chạm"></button>
         </div>
         <div class="lane" data-lane="1">
           <button type="button" class="collectible" data-collected="false" style="--pos:15%" aria-label="Nhặt sao">★</button>
         </div>
         <div class="lane" data-lane="2">
-          <div class="obstacle" data-kind="cloud" style="--pos:78%"></div>
+          <button type="button" class="obstacle" data-kind="cloud" data-hit="false" style="--pos:78%" aria-label="Vật cản — chạm để xem phản hồi va chạm"></button>
           <button type="button" class="collectible" data-collected="false" style="--pos:25%" aria-label="Nhặt sao">★</button>
         </div>
         <div class="finish-gate" id="finish-gate">
@@ -79,6 +88,24 @@
       </div>
       <div class="ship" id="ship" aria-hidden="true">
         <div class="ship-body"></div>
+        <div class="ship-hit-flash" id="ship-hit-flash">-1 ★</div>
+      </div>
+    </div>
+
+    <div class="tutorial-overlay" id="tutorial-overlay" hidden>
+      <div class="tutorial-step" id="tutorial-step-1">
+        <div class="tutorial-anim tutorial-anim-swipe" aria-hidden="true">
+          <span class="tutorial-hand">✋</span>
+        </div>
+        <p class="tutorial-text">Vuốt sang trái hoặc sang phải để đổi làn.</p>
+        <button type="button" class="btn btn-primary" id="btn-tutorial-next">Tiếp theo</button>
+      </div>
+      <div class="tutorial-step" id="tutorial-step-2" hidden>
+        <div class="tutorial-anim tutorial-anim-tap" aria-hidden="true">
+          <span class="tutorial-tap-ring"></span>
+        </div>
+        <p class="tutorial-text">Chạm để bay qua vật cản.</p>
+        <button type="button" class="btn btn-primary" id="btn-tutorial-start">Thử ngay</button>
       </div>
     </div>
 
@@ -92,15 +119,20 @@
     </div>
 
     <div class="modal-backdrop" id="pause-backdrop" hidden>
-      <div class="modal pause-modal" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+      <div class="modal pause-modal" id="pause-modal-main" role="dialog" aria-modal="true" aria-labelledby="pause-title">
         <h2 id="pause-title">Tạm dừng</h2>
         <button type="button" class="btn btn-primary" id="btn-resume">Tiếp tục</button>
         <button type="button" class="btn btn-secondary" id="btn-restart-level">
           <span aria-hidden="true">↻</span> Chơi lại
         </button>
-        <button type="button" class="btn btn-secondary" id="btn-pause-to-menu">
+        <button type="button" class="btn btn-secondary" id="btn-pause-to-map">
           <span aria-hidden="true">🗺</span> Về bản đồ
         </button>
+      </div>
+      <div class="modal pause-modal" id="pause-modal-confirm-restart" role="dialog" aria-modal="true" aria-labelledby="pause-confirm-title" hidden>
+        <h2 id="pause-confirm-title">Chơi lại từ đầu màn này?</h2>
+        <button type="button" class="btn btn-primary" id="btn-restart-confirm">Đồng ý, chơi lại</button>
+        <button type="button" class="btn btn-secondary" id="btn-restart-cancel">Hủy</button>
       </div>
     </div>
   </section>
@@ -154,7 +186,66 @@
 
   <section id="screen-result-pass" class="screen" aria-label="Kết quả">
     <div class="result-content" id="result-content">
-      <!-- filled by app.js: pass (DES-08) or retry stand-in -->
+      <!-- filled by app.js: DES-08 pass or DES-09 retry -->
+    </div>
+  </section>
+
+  <section id="screen-adult" class="screen" aria-label="Góc người lớn">
+    <div class="adult-topbar">
+      <h1 class="adult-title" tabindex="-1">Góc người lớn</h1>
+      <button type="button" class="icon-btn" id="btn-adult-close" aria-label="Đóng Góc người lớn">✕</button>
+    </div>
+
+    <div class="adult-tabs" role="tablist" aria-label="Chuyển mục Góc người lớn">
+      <button type="button" class="adult-tab is-active" id="tab-progress" role="tab" aria-selected="true" aria-controls="panel-progress">Tiến độ</button>
+      <button type="button" class="adult-tab" id="tab-settings" role="tab" aria-selected="false" aria-controls="panel-settings">Cài đặt</button>
+    </div>
+
+    <div class="adult-body">
+      <div class="adult-panel" id="panel-progress" role="tabpanel">
+        <div class="adult-stat-grid" id="adult-stat-grid"></div>
+      </div>
+
+      <div class="adult-panel" id="panel-settings" hidden role="tabpanel">
+        <div class="volume-row">
+          <label for="vol-music">🎵 Nhạc</label>
+          <input type="range" id="vol-music" min="0" max="100" value="45">
+          <span class="volume-value" id="vol-music-value">45%</span>
+        </div>
+        <div class="volume-row">
+          <label for="vol-sfx">🔔 Hiệu ứng</label>
+          <input type="range" id="vol-sfx" min="0" max="100" value="70">
+          <span class="volume-value" id="vol-sfx-value">70%</span>
+        </div>
+        <div class="volume-row">
+          <label for="vol-voice">🗣 Giọng nói</label>
+          <input type="range" id="vol-voice" min="0" max="100" value="80">
+          <span class="volume-value" id="vol-voice-value">80%</span>
+        </div>
+
+        <button type="button" class="btn btn-secondary btn-reset-progress" id="btn-reset-progress">Xóa tiến độ</button>
+
+        <div class="qa-tools">
+          <p class="qa-tools-label">Công cụ kiểm thử thiết kế (không phải tính năng sản phẩm)</p>
+          <button type="button" class="btn btn-secondary" id="btn-qa-fallback">Diễn tập màn hình khôi phục dữ liệu (DES-11)</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="reset-confirm-backdrop" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reset-confirm-title">
+        <h2 id="reset-confirm-title">Xóa toàn bộ tiến độ?</h2>
+        <p>Số màn đã mở và số sao đã đạt sẽ mất, không thể hoàn tác.</p>
+        <button type="button" class="btn btn-primary" id="btn-reset-confirm">Xóa tiến độ</button>
+        <button type="button" class="btn btn-secondary" id="btn-reset-cancel">Hủy</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-data-fallback" class="screen" aria-label="Đang khôi phục dữ liệu">
+    <div class="fallback-content">
+      <div class="fallback-spinner" aria-hidden="true">⟳</div>
+      <h2 class="fallback-title" tabindex="-1">Mình thử lại nhé!</h2>
     </div>
   </section>
 

@@ -2,10 +2,10 @@
 
 ## Status
 
-- Stage: vertical prototype (DES-01, DES-04, DES-06, DES-08)
+- Stage: full prototype — DES-01 through DES-11 built, approved vertical slice expanded per owner request
 - Selected direction: **Direction A — Xưởng Khám Phá Sắc Màu** (confirmed default per `UI_DESIGN_BRIEF.md` §4: "Start with Direction A... should not replace Direction A without explicit approval." No material interface change is being proposed, so work proceeds without blocking on owner sign-off; see comparison table below.)
 - Production UI implementation: not started
-- Prototype: vertical slice built under `prototype/`
+- Prototype: all 11 design states built under `prototype/`, screenshots captured at both viewports in `docs/design/screenshots/`
 
 ## Input review — contradictions and gaps found
 
@@ -56,11 +56,32 @@ No hard contradictions between `APP_SPEC.md` and `UI_DESIGN_BRIEF.md`/`IMPLEMENT
 | UIR-009 | Does 2nd-attempt-correct count toward 8/10? | No — only 1st-attempt-correct counts; 2nd-attempt-correct still unblocks continuation | QuizGate scoring |
 | UIR-010 | Star-reward formula for a passed gate | 8/10=1★, 9/10=2★, 10/10=3★ | DES-08 |
 
-## Prototype scope note (this pass)
+## Prototype scope note (vertical-slice pass)
 
 Built: DES-01 (Menu), DES-04 (Gameplay HUD, with a minimal pause stand-in), DES-06 (Cổng Toán Học, including inline correct/first-wrong/second-wrong feedback since that is intrinsic to the quiz gate loop), DES-08 (Pass result).
 
-Not built this pass (tracked for the next expansion per `IMPLEMENTATION_PLAN.md` §3.5 step 5–6): DES-02 (map), DES-03 (tutorial), DES-05 (full pause), DES-09 (full retry result), DES-10 (adult area), DES-11 (data fallback).
+Not built that pass (now built in the full-expansion pass below): DES-02 (map), DES-03 (tutorial), DES-05 (full pause), DES-09 (full retry result), DES-10 (adult area), DES-11 (data fallback).
+
+## Full expansion pass (DES-01–11) — new decisions
+
+The vertical prototype was approved and the same component system/tokens were expanded to all 11 states. New gaps and judgment calls made during this pass, logged per `CLAUDE.md`'s "stop and report the exact conflict" rule where the source docs didn't fully specify behavior:
+
+| ID | Finding | Source(s) | Decision applied | Impact |
+|---|---|---|---|---|
+| UIR-018 | Whether DES-03 (tutorial) should replay every time Level 1 is entered, or only the very first time. `screen-flow.md` ties it to the "Màn đầu tiên" (first-level) edge; `IMPLEMENTATION_PLAN.md`'s DES-03 row calls it "Hướng dẫn **lần đầu**" (first-**time** guidance). | screen-flow.md; IMPLEMENTATION_PLAN.md DES-03 row | Show DES-03 only the first time Level 1 is ever entered (a `hasPlayedTutorial` flag), not on every replay — repeating a skippable overlay on every replay adds friction with no benefit, and "lần đầu" reads as "first time" rather than "every time you pick level 1." | DES-03 trigger logic |
+| UIR-019 | Map → Menu navigation isn't drawn in `screen-flow.md` (only Menu→Map is shown), but some way back to the menu (e.g. to reach sound toggle or the adult corner) is necessary. | screen-flow.md | Added a small back/home icon button top-left of DES-02, navigating to DES-01. This is an addition beyond what the flow diagram draws, not a contradiction of it. | DES-02 layout |
+| UIR-020 | Level 10 (final level) pass state was deferred as out-of-scope in the vertical slice (`UIR-008`). With DES-02 now built, leaving it unhandled would dead-end a click path. | APP_SPEC §3.3, §5.2; UIR-008 | Passing level 10 shows distinct copy ("Con đã hoàn thành mọi vùng đất!") and only a "Về bản đồ" action (no "next level" teaser, since none exists). Resolves UIR-008 for this prototype; still worth an explicit product decision on whether a 10/10-complete state needs its own screen in production. | DES-08 (last-level variant) |
+| UIR-021 | DES-04's obstacles were decorative-only in the vertical slice (no collision simulated), but `APP_SPEC.md` §3.1 and the DES-04 brief both describe collision feedback as a required state ("va chạm chỉ làm mất một sao... collision feedback is brief"). | APP_SPEC §3.1; UI_DESIGN_BRIEF DES-04 | Obstacles are now tappable in the prototype to *simulate* a collision (since there's no real physics loop): a brief coral flash + "-1 ★" indicator decrements the HUD star count (floor 0), non-punitively, matching "chỉ làm mất một sao và tiếp tục chơi." This remains a UI/interaction stand-in, not real collision physics. | DES-04 |
+| UIR-022 | UI_DESIGN_BRIEF DES-05 explicitly requires one confirmation step before restarting a level ("Restart requires one confirmation only"), but the vertical slice's pause modal reset immediately with no confirmation. | UI_DESIGN_BRIEF DES-05 | Pause modal's "Chơi lại" now shows one inline confirmation sub-view before resetting. | DES-05 |
+| UIR-023 | DES-11 (data fallback) can only occur in production when `questions.math.vi.json` fails validation at startup (FR-10/DATA-06) — there is no real file I/O in the web prototype to fail. Per `UI_DESIGN_BRIEF.md` §12, "All DES states are reachable in the prototype without editing URL or code," so DES-11 still needs a legitimate in-UI trigger. | UI_DESIGN_BRIEF §12; APP_SPEC FR-10/DATA-06 | Added a clearly-labeled "Công cụ kiểm thử thiết kế" (design QA tools) control inside DES-10 (Adult Area) — consistent with the brief's own framing that "technical details are hidden in the adult area/log" — that simulates the fallback scenario on demand. This is explicitly a QA/demo affordance, not a production feature, and is labeled as such in the UI. | DES-10, DES-11 |
+| UIR-024 | Adult-area accuracy stats (§5.5: overall / addition / subtraction / regrouping accuracy) need a defined counting rule. | APP_SPEC §5.5; IMPLEMENTATION_PLAN §7 risk table | Consistent with `UIR-009`, stats count **first-attempt** answers only (matches the risk table's explicit call to track first-attempt accuracy separately), accumulated across the whole session, not per-quiz. | DES-10 |
+| UIR-025 | Privacy Policy display in the Adult Area (`GP-14`) is explicitly a Phase 2 Google Play requirement. | APP_SPEC §15.3 | Not added to DES-10 in this pass — adding it now would be scope creep into Phase 2/Google Play concerns, which `CLAUDE.md` says not to touch. | DES-10 (deferred, not a gap) |
+
+## Prototype scope note (full-expansion pass)
+
+All 11 design states (DES-01 through DES-11) are now built and click-tested in `prototype/`. Level progress (unlocked levels, stars, accuracy stats) is tracked in an in-memory JS object for this session only — it is **not** persisted to `localStorage` or any device storage. This is a deliberate simplification: real persistence is `ProgressService`'s job in the Godot build (FR-07, NFR-07), and the prototype resets on reload like any static page. The "Xóa tiến độ" (reset) flow in DES-10 is still fully click-testable against this in-memory state.
+
+The quiz content itself is still the same fixed 10-question demo set regardless of which level is selected (already noted as a limitation in the vertical-slice pass) — production difficulty-based question selection is explicitly out of scope for UI design work per `CLAUDE.md`.
 
 ## Testing results — issues found and status (this pass)
 
@@ -73,9 +94,22 @@ Tested by clicking every path in `prototype/` (menu → gameplay → quiz → pa
 | UIR-014 | Minor | On first load, the ship's resting position visually overlapped the lane-1 star collectible. | **Fixed** — moved the collectible's vertical position so it's clearly separate from the ship's resting spot. |
 | UIR-015 | Minor | The retry stand-in screen's score number reused the same success-green color as the DES-08 pass screen, which could read as "you passed" even when the message says otherwise. | **Fixed** — retry-state score now uses ink navy instead of success green. |
 | UIR-016 | Minor, open | On the tablet viewport, when the feedback band is empty there's a large empty vertical gap between the answer field and the keypad (keypad is pinned to the bottom via `margin-top: auto`). Not a Blocker/Major — nothing overlaps or scrolls — but worth a visual-rhythm pass before this is treated as final. | Not fixed this pass; flagged for the next iteration. |
-| UIR-017 | Minor, open | Sound toggle state isn't persisted (resets on reload) and the adult-corner hold gesture's destination (DES-10) is a toast stand-in rather than a real screen. Both are intentional given this pass's scope (see UIR-011) but are tracked here so they aren't mistaken for oversights. | Deferred to the DES-10 build. |
+| UIR-017 | Minor, partially resolved | Sound toggle state isn't persisted (resets on reload) and the adult-corner hold gesture's destination (DES-10) was a toast stand-in rather than a real screen. | DES-10 is now a real screen (see the full-expansion pass below) — resolved. Sound toggle persistence remains an open Minor item; not implemented (no `localStorage`), consistent with the rest of the prototype's in-memory-only state. |
 
-No remaining Blocker or Major issues in the four screens built this pass.
+No remaining Blocker or Major issues in the four screens built in the vertical-slice pass.
+
+## Testing results — full expansion pass (DES-01–11)
+
+Tested by clicking/scripting every path across all 11 screens at both 960×540 and 1280×800: menu → map (locked-node shake+toast, unlocked entry) → tutorial (first-entry only, both steps) → gameplay (lane move, jump, star collect, obstacle collision) → pause (resume, restart with confirm/cancel) → quiz (correct/first-wrong/second-wrong, exit confirm/cancel) → pass result (map routing, star/level unlock, last-level variant) → retry result (review list, Thử lại, Về bản đồ) → adult area (tab switch, stat rendering, volume sliders, reset with confirm) → DES-11 QA trigger (auto-recovery + toast). Screenshots for all 11 states captured to `docs/design/screenshots/{phone,tablet}/`.
+
+| ID | Severity | Finding | Resolution |
+|---|---|---|---|
+| UIR-026 | Major | Keyboard/tab focus could reach background buttons (HUD, keypad, lane controls) hidden behind the pause modal, quiz-exit modal, reset-confirm modal, and tutorial overlay — plain `<div>` backdrops don't trap focus the way a native `<dialog>` does. Found while verifying keyboard-only interaction per `CLAUDE.md`'s verification checklist. | **Fixed** — added a `setOverlayOpen()` helper that marks all background siblings `inert` while any overlay is open (blocks both pointer and keyboard interaction) and moves focus into the overlay. Verified programmatically that background buttons become unreachable while each overlay is open. |
+| UIR-027 | Major | The adult-corner hold gesture used `requestAnimationFrame`, which several environments pause when a page isn't visible/focused — the 3-second hold would silently never complete with no error shown. Found while testing the DES-10 entry point. | **Fixed** — switched to `setInterval` (50ms tick), which doesn't depend on paint/visibility. This is a robustness fix, not just a test workaround: any embedding context that throttles rAF (e.g. a backgrounded WebView) would have hit the same silent failure. |
+| UIR-028 | Minor | Toast notifications (bottom-center) overlapped the quiz screen's numeric keypad — a real, interactive control — and in one case briefly obscured the equation text. | **Fixed** — repositioned toast to sit just below the top bar/HUD (`top: calc(var(--hud-height) + 96px)`) on every screen; verified geometrically clear of the quiz equation. A minor decorative overlap with the menu mascot is possible in principle but never occurs in practice (no toast currently fires while the menu screen is active). |
+| UIR-029 | Minor | Advancing from tutorial step 1 to step 2 left keyboard focus on the now-hidden "Tiếp theo" button instead of the visible "Thử ngay" button. | **Fixed** — focus now moves to the new step's button on each transition. |
+
+No remaining Blocker or Major issues across all 11 screens. Remaining open Minor items: `UIR-016` (tablet quiz vertical gap, carried over) and sound-toggle persistence (part of `UIR-017`).
 
 ## Issue template
 

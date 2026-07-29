@@ -5,10 +5,11 @@ VIS-BG-SKY-01,image,DES-01/DES-04,Sky theme background,WebP,1920x1080,css-protot
 VIS-BG-OCEAN-01,image,DES-04,Ocean theme background,WebP,1920x1080,planned,,,,Not needed for this vertical slice (only Sky theme built)
 VIS-BG-FOREST-01,image,DES-04,Forest theme background,WebP,1920x1080,planned,,,,Not needed for this vertical slice (only Sky theme built)
 VIS-BG-SPACE-01,image,DES-04,Space theme background,WebP,1920x1080,planned,,,,Not needed for this vertical slice (only Sky theme built)
-VIS-ICON-SET-01,icons,all,"Pause, sound, back/exit, lock, star, delete, check, retry, info, speaker",SVG/PNG,24-40dp,css-prototype,,,,"Use one consistent icon family in production. Prototype uses Unicode glyphs/emoji as placeholders (⏸ 🔊 🔇 🔒 ✕ ⌫ ✔ ↻ i ▶ ◀ ⤴ 🚩 🗺), not a final icon set."
-VIS-OBSTACLE-01,image,DES-04,Obstacle shapes (rock, cloud),PNG/WebP,128x128,css-prototype,,,,Decorative-only in this slice (not collidable). CSS rounded-rect/pill shapes stand in for final sprites.
+VIS-ICON-SET-01,icons,all,"Pause, sound, back/exit, lock, star, delete, check, retry, info, speaker, home, music, effects, voice, spinner",SVG/PNG,24-40dp,css-prototype,,,,"Use one consistent icon family in production. Prototype uses Unicode glyphs/emoji as placeholders (⏸ 🔊 🔇 🔒 ✕ ⌫ ✔ ↻ i ▶ ◀ ⤴ 🚩 🗺 🏠 🎵 🔔 🗣 ⟳), not a final icon set."
+VIS-OBSTACLE-01,image,DES-04,Obstacle shapes (rock, cloud),PNG/WebP,128x128,css-prototype,,,,"Now tappable to simulate a collision (coral flash + star loss, UIR-021). CSS rounded-rect/pill shapes stand in for final sprites."
 VIS-COLLECTIBLE-STAR-01,image,DES-04,Star pickup,PNG/WebP,64x64,css-prototype,,,,Reuses the ★ glyph as a tappable placeholder; production should use a distinct sprite from VIS-MASCOT-01.
-VIS-TUTORIAL-01,image,DES-03,Swipe and tap gesture guides,PNG/WebP,512x256,planned,,,,No real hand photo required. DES-03 out of scope this pass.
+VIS-TUTORIAL-01,image,DES-03,Swipe and tap gesture guides,PNG/WebP,512x256,css-prototype,,,,"Built this pass as CSS/emoji placeholders: an animated ✋ glyph for the swipe step, an expanding CSS ring for the tap step. No real hand photo/sprite produced."
+VIS-LEVELNODE-01,icon,DES-02,Level node number/lock/star treatment,SVG/PNG,64x64,css-prototype,,,,"CSS circle with number or 🔒 glyph, plus ★/☆ Unicode row for stars. Placeholder only."
 FONT-UI-01,font,all,Vietnamese UI font,WOFF2/TTF,variable,planned,https://fonts.google.com/specimen/Be+Vietnam+Pro,,SIL-OFL,Bundle locally and retain license. Prototype uses the approved fallback stack (Arial/Tahoma) per UI_DESIGN_BRIEF, no remote font request.
 AUD-BGM-01,audio,DES-01/Menu,Menu music,OGG,45-75s,planned,,,,See APP_SPEC audio section. Not implemented in the web prototype (documented as a cue point only).
 AUD-BGM-03,audio,DES-06,Quiz gate music,OGG,45-75s,planned,,,,See APP_SPEC audio section. Not implemented in the web prototype.
@@ -16,4 +17,7 @@ AUD-SFX-01,audio,all,ui_tap,OGG,50-120ms,planned,,,,Not implemented in the web p
 AUD-SFX-06,audio,DES-04,star_collect,OGG,150-350ms,planned,,,,Not implemented in the web prototype.
 AUD-SFX-09,audio,DES-07,answer_correct,OGG,0.5-1s,planned,,,,Not implemented in the web prototype.
 AUD-SFX-10,audio,DES-07,answer_incorrect,OGG,0.4-0.8s,planned,,,,Not implemented in the web prototype; feedback is icon+text only per the non-punitive requirement.
+AUD-SFX-07,audio,DES-04,soft_hit,OGG,200-400ms,planned,,,,"New cue point identified this pass alongside the collision-feedback UI (UIR-021). Not implemented in the web prototype."
+AUD-SFX-12,audio,DES-08,level_unlock,OGG,1-2s,planned,,,,Not implemented in the web prototype.
 AUD-VO-03,voice,DES-06,Spoken question read-aloud,OGG,variable,planned,,,,"Prototype's speaker button attempts browser Web Speech API (vi-VN) as a progressive enhancement only, with a graceful no-op fallback; not the licensed recorded voice line."
+AUD-VO-06,voice,DES-08,"""Con đã mở được màn mới!""",OGG,variable,planned,,,,Not implemented in the web prototype.
