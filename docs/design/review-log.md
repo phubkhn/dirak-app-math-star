@@ -62,6 +62,21 @@ Built: DES-01 (Menu), DES-04 (Gameplay HUD, with a minimal pause stand-in), DES-
 
 Not built this pass (tracked for the next expansion per `IMPLEMENTATION_PLAN.md` §3.5 step 5–6): DES-02 (map), DES-03 (tutorial), DES-05 (full pause), DES-09 (full retry result), DES-10 (adult area), DES-11 (data fallback).
 
+## Testing results — issues found and status (this pass)
+
+Tested by clicking every path in `prototype/` (menu → gameplay → quiz → pass result; menu → gameplay → quiz → retry stand-in; pause open/resume/restart/to-menu; quiz exit confirm/cancel; adult-corner hold/cancel) at both 960×540 and 1280×800, plus targeted checks of the longest sample equation (`19 + 68 = 87`) and its hint text, and the longest approved copy strings. All testing was in a desktop browser only — see "Verification" note at the end of this file.
+
+| ID | Severity | Finding | Resolution |
+|---|---|---|---|
+| UIR-012 | Blocker | Pause and quiz-exit modals rendered **open by default** on load. Root cause: `.modal-backdrop { display: flex }` in CSS overrides the browser's default `[hidden] { display: none }` UA rule, since author styles beat UA styles regardless of specificity. | **Fixed** — added an explicit `.modal-backdrop[hidden] { display: none }` rule. Re-tested: both modals now stay closed until their trigger is clicked. |
+| UIR-013 | Major | A second wrong answer entered soon after the first could have its "reveal" (correct answer + hint) state **wiped a moment after appearing**, reverting to a blank feedback band. Root cause: the first wrong attempt's auto-clear `setTimeout` was never cancelled, so it fired later and cleared whatever feedback state was current — including the attempt-2 reveal. | **Fixed** — the keypad is now disabled for the auto-clear window (so a real user can't race it) and the timer is explicitly cancelled on every new submission and question load. Re-tested: the reveal now persists until the child taps "Tiếp tục." |
+| UIR-014 | Minor | On first load, the ship's resting position visually overlapped the lane-1 star collectible. | **Fixed** — moved the collectible's vertical position so it's clearly separate from the ship's resting spot. |
+| UIR-015 | Minor | The retry stand-in screen's score number reused the same success-green color as the DES-08 pass screen, which could read as "you passed" even when the message says otherwise. | **Fixed** — retry-state score now uses ink navy instead of success green. |
+| UIR-016 | Minor, open | On the tablet viewport, when the feedback band is empty there's a large empty vertical gap between the answer field and the keypad (keypad is pinned to the bottom via `margin-top: auto`). Not a Blocker/Major — nothing overlaps or scrolls — but worth a visual-rhythm pass before this is treated as final. | Not fixed this pass; flagged for the next iteration. |
+| UIR-017 | Minor, open | Sound toggle state isn't persisted (resets on reload) and the adult-corner hold gesture's destination (DES-10) is a toast stand-in rather than a real screen. Both are intentional given this pass's scope (see UIR-011) but are tracked here so they aren't mistaken for oversights. | Deferred to the DES-10 build. |
+
+No remaining Blocker or Major issues in the four screens built this pass.
+
 ## Issue template
 
 ```text
@@ -73,3 +88,7 @@ Expected:
 Evidence:
 Resolution:
 ```
+
+## Verification note
+
+All testing in this pass — click-path testing, viewport checks, and the screenshots in `docs/design/screenshots/` — was performed in a desktop Chrome browser (both interactively and via headless automation) against the static `prototype/` files served locally. This verifies the **web prototype only**. It is not evidence of Android or Godot behavior — touch ergonomics, real-device performance, TalkBack/accessibility behavior, and Godot's actual component rendering must be verified separately once the production build exists, per `CLAUDE.md`.

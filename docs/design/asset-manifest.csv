@@ -1,11 +1,19 @@
 asset_id,type,screen,purpose,format,target_size,status,source,author,license,notes
-VIS-MASCOT-01,image,all,Sao Nho mascot,PNG/WebP,512x512,placeholder,,,,Original five-point star guide
-VIS-SHIP-01,image,DES-03/DES-04,Player ship sprite,PNG/WebP,512x256,placeholder,,,,Original 2D exploration ship
-VIS-BG-SKY-01,image,DES-01/DES-04,Sky theme background,WebP,1920x1080,placeholder,,,,Must remain readable behind HUD
-VIS-BG-OCEAN-01,image,DES-04,Ocean theme background,WebP,1920x1080,planned,,,,
-VIS-BG-FOREST-01,image,DES-04,Forest theme background,WebP,1920x1080,planned,,,,
-VIS-BG-SPACE-01,image,DES-04,Space theme background,WebP,1920x1080,planned,,,,
-VIS-ICON-SET-01,icons,all,Pause sound back close lock star,SVG/PNG,24-40dp,placeholder,,,,Use one consistent icon family
-VIS-TUTORIAL-01,image,DES-03,Swipe and tap gesture guides,PNG/WebP,512x256,planned,,,,No real hand photo required
-FONT-UI-01,font,all,Vietnamese UI font,WOFF2/TTF,variable,planned,https://fonts.google.com/specimen/Be+Vietnam+Pro,,SIL-OFL,Bundle locally and retain license
-AUD-BGM-01,audio,DES-01/Menu,Menu music,OGG,45-75s,planned,,,,See APP_SPEC audio section
+VIS-MASCOT-01,image,all,Sao Nho mascot,PNG/WebP,512x512,css-prototype,,,,Original five-point star guide. Rendered in prototype as a CSS clip-path star with face; no binary asset produced yet. Not shown on DES-04 (UIR-007).
+VIS-SHIP-01,image,DES-03/DES-04,Player ship sprite,PNG/WebP,512x256,css-prototype,,,,Original 2D exploration ship. Rendered in prototype as a CSS rounded rectangle; no binary asset produced yet.
+VIS-BG-SKY-01,image,DES-01/DES-04,Sky theme background,WebP,1920x1080,css-prototype,,,,Must remain readable behind HUD. Prototype uses a flat CSS gradient + CSS cloud/kite shapes as a stand-in.
+VIS-BG-OCEAN-01,image,DES-04,Ocean theme background,WebP,1920x1080,planned,,,,Not needed for this vertical slice (only Sky theme built)
+VIS-BG-FOREST-01,image,DES-04,Forest theme background,WebP,1920x1080,planned,,,,Not needed for this vertical slice (only Sky theme built)
+VIS-BG-SPACE-01,image,DES-04,Space theme background,WebP,1920x1080,planned,,,,Not needed for this vertical slice (only Sky theme built)
+VIS-ICON-SET-01,icons,all,"Pause, sound, back/exit, lock, star, delete, check, retry, info, speaker",SVG/PNG,24-40dp,css-prototype,,,,"Use one consistent icon family in production. Prototype uses Unicode glyphs/emoji as placeholders (⏸ 🔊 🔇 🔒 ✕ ⌫ ✔ ↻ i ▶ ◀ ⤴ 🚩 🗺), not a final icon set."
+VIS-OBSTACLE-01,image,DES-04,Obstacle shapes (rock, cloud),PNG/WebP,128x128,css-prototype,,,,Decorative-only in this slice (not collidable). CSS rounded-rect/pill shapes stand in for final sprites.
+VIS-COLLECTIBLE-STAR-01,image,DES-04,Star pickup,PNG/WebP,64x64,css-prototype,,,,Reuses the ★ glyph as a tappable placeholder; production should use a distinct sprite from VIS-MASCOT-01.
+VIS-TUTORIAL-01,image,DES-03,Swipe and tap gesture guides,PNG/WebP,512x256,planned,,,,No real hand photo required. DES-03 out of scope this pass.
+FONT-UI-01,font,all,Vietnamese UI font,WOFF2/TTF,variable,planned,https://fonts.google.com/specimen/Be+Vietnam+Pro,,SIL-OFL,Bundle locally and retain license. Prototype uses the approved fallback stack (Arial/Tahoma) per UI_DESIGN_BRIEF, no remote font request.
+AUD-BGM-01,audio,DES-01/Menu,Menu music,OGG,45-75s,planned,,,,See APP_SPEC audio section. Not implemented in the web prototype (documented as a cue point only).
+AUD-BGM-03,audio,DES-06,Quiz gate music,OGG,45-75s,planned,,,,See APP_SPEC audio section. Not implemented in the web prototype.
+AUD-SFX-01,audio,all,ui_tap,OGG,50-120ms,planned,,,,Not implemented in the web prototype (no Web Audio playback added to keep scope to visual design).
+AUD-SFX-06,audio,DES-04,star_collect,OGG,150-350ms,planned,,,,Not implemented in the web prototype.
+AUD-SFX-09,audio,DES-07,answer_correct,OGG,0.5-1s,planned,,,,Not implemented in the web prototype.
+AUD-SFX-10,audio,DES-07,answer_incorrect,OGG,0.4-0.8s,planned,,,,Not implemented in the web prototype; feedback is icon+text only per the non-punitive requirement.
+AUD-VO-03,voice,DES-06,Spoken question read-aloud,OGG,variable,planned,,,,"Prototype's speaker button attempts browser Web Speech API (vi-VN) as a progressive enhancement only, with a graceful no-op fallback; not the licensed recorded voice line."
