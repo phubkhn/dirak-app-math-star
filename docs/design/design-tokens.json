@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "status": "starter",
+  "direction": "A-xuong-kham-pha-sac-mau",
+  "viewport": {
+    "phone": { "width": 960, "height": 540 },
+    "tablet": { "width": 1280, "height": 800 },
+    "orientation": "landscape"
+  },
+  "color": {
+    "ink": "#17324D",
+    "action": "#096FAF",
+    "action_pressed": "#075C91",
+    "success": "#197A4A",
+    "sun": "#F5B82E",
+    "coral": "#E7654D",
+    "error": "#B83B5E",
+    "sky_050": "#F3FAFF",
+    "aqua_100": "#DDF5F2",
+    "leaf_100": "#E4F4D8",
+    "surface": "#FFFFFF",
+    "neutral_100": "#E8EEF3",
+    "neutral_500": "#60788E",
+    "overlay": "#17324DB8",
+    "focus": "#6B5BD2"
+  },
+  "typography": {
+    "production_family": "Be Vietnam Pro",
+    "prototype_family": "Arial, Tahoma, sans-serif",
+    "weight_regular": 400,
+    "weight_medium": 500,
+    "weight_semibold": 600,
+    "size_caption": 16,
+    "size_body": 20,
+    "size_button": 22,
+    "size_heading": 30,
+    "size_equation_phone": 56,
+    "size_equation_tablet": 64,
+    "line_height_ratio": 1.3,
+    "letter_spacing": 0
+  },
+  "spacing": {
+    "unit": 8,
+    "xs": 4,
+    "sm": 8,
+    "md": 16,
+    "lg": 24,
+    "xl": 32,
+    "xxl": 48
+  },
+  "radius": {
+    "control": 8,
+    "card": 8,
+    "modal": 8,
+    "circle": 999
+  },
+  "size": {
+    "touch_min": 48,
+    "icon_sm": 24,
+    "icon_md": 32,
+    "icon_lg": 40,
+    "button_height": 56,
+    "button_primary_min_width": 160,
+    "hud_phone": 64,
+    "hud_tablet": 72,
+    "content_max_tablet": 1120
+  },
+  "motion_ms": {
+    "press": 100,
+    "feedback": 140,
+    "panel": 220,
+    "reward": 700
+  },
+  "audio_default_percent": {
+    "music": 45,
+    "effects": 70,
+    "voice": 80
+  }
+}

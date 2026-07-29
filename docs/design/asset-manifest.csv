@@ -1,0 +1,11 @@
+asset_id,type,screen,purpose,format,target_size,status,source,author,license,notes
+VIS-MASCOT-01,image,all,Sao Nho mascot,PNG/WebP,512x512,placeholder,,,,Original five-point star guide
+VIS-SHIP-01,image,DES-03/DES-04,Player ship sprite,PNG/WebP,512x256,placeholder,,,,Original 2D exploration ship
+VIS-BG-SKY-01,image,DES-01/DES-04,Sky theme background,WebP,1920x1080,placeholder,,,,Must remain readable behind HUD
+VIS-BG-OCEAN-01,image,DES-04,Ocean theme background,WebP,1920x1080,planned,,,,
+VIS-BG-FOREST-01,image,DES-04,Forest theme background,WebP,1920x1080,planned,,,,
+VIS-BG-SPACE-01,image,DES-04,Space theme background,WebP,1920x1080,planned,,,,
+VIS-ICON-SET-01,icons,all,Pause sound back close lock star,SVG/PNG,24-40dp,placeholder,,,,Use one consistent icon family
+VIS-TUTORIAL-01,image,DES-03,Swipe and tap gesture guides,PNG/WebP,512x256,planned,,,,No real hand photo required
+FONT-UI-01,font,all,Vietnamese UI font,WOFF2/TTF,variable,planned,https://fonts.google.com/specimen/Be+Vietnam+Pro,,SIL-OFL,Bundle locally and retain license
+AUD-BGM-01,audio,DES-01/Menu,Menu music,OGG,45-75s,planned,,,,See APP_SPEC audio section

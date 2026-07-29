@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hành Trình Sao Toán — Prototype</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="app" class="app">
+
+  <section id="screen-menu" class="screen is-active" aria-label="Menu chính">
+    <div class="menu-layer menu-sky" aria-hidden="true">
+      <div class="cloud cloud-a"></div>
+      <div class="cloud cloud-b"></div>
+      <div class="kite"></div>
+    </div>
+
+    <div class="menu-content">
+      <div class="mascot" aria-hidden="true">
+        <div class="mascot-star">
+          <div class="mascot-face">
+            <span class="mascot-eye mascot-eye-l"></span>
+            <span class="mascot-eye mascot-eye-r"></span>
+            <span class="mascot-mouth"></span>
+          </div>
+          <div class="mascot-pack"></div>
+        </div>
+      </div>
+
+      <h1 class="menu-title">Hành Trình Sao Toán</h1>
+      <p class="menu-subtitle">Cùng Sao Nhỏ bay khắp bầu trời, đại dương, khu rừng và vũ trụ!</p>
+
+      <button type="button" class="btn btn-primary btn-play" id="btn-play">
+        <span class="btn-icon" aria-hidden="true">▶</span>
+        Chơi
+      </button>
+    </div>
+
+    <button type="button" class="icon-btn icon-btn-sound" id="btn-sound" aria-pressed="true" aria-label="Bật hoặc tắt âm thanh">
+      <span class="icon-sound-on" aria-hidden="true">🔊</span>
+      <span class="icon-sound-off" aria-hidden="true">🔇</span>
+    </button>
+
+    <button type="button" class="adult-corner-btn" id="btn-adult" aria-label="Góc người lớn — giữ 3 giây để mở">
+      <span class="adult-corner-ring" id="adult-ring" aria-hidden="true"></span>
+      <span class="adult-corner-icon" aria-hidden="true">🔒</span>
+      <span class="adult-corner-label">Góc người lớn</span>
+    </button>
+  </section>
+
+  <section id="screen-gameplay" class="screen" aria-label="Bay Nhặt Sao — màn chơi">
+    <div class="hud" role="toolbar" aria-label="Thanh trạng thái màn chơi">
+      <div class="hud-stars" aria-live="polite">
+        <span class="hud-star-icon" aria-hidden="true">★</span>
+        <span id="hud-star-count">0</span>
+      </div>
+      <button type="button" class="icon-btn hud-pause-btn" id="btn-pause" aria-label="Tạm dừng">
+        <span aria-hidden="true">⏸</span>
+      </button>
+    </div>
+
+    <div class="playfield" id="playfield">
+      <div class="lane-track">
+        <div class="lane" data-lane="0">
+          <div class="obstacle" data-kind="rock" style="--pos:62%"></div>
+        </div>
+        <div class="lane" data-lane="1">
+          <button type="button" class="collectible" data-collected="false" style="--pos:15%" aria-label="Nhặt sao">★</button>
+        </div>
+        <div class="lane" data-lane="2">
+          <div class="obstacle" data-kind="cloud" style="--pos:78%"></div>
+          <button type="button" class="collectible" data-collected="false" style="--pos:25%" aria-label="Nhặt sao">★</button>
+        </div>
+        <div class="finish-gate" id="finish-gate">
+          <span aria-hidden="true">🚩</span>
+          <span>Đích</span>
+        </div>
+      </div>
+      <div class="ship" id="ship" aria-hidden="true">
+        <div class="ship-body"></div>
+      </div>
+    </div>
+
+    <div class="gameplay-controls">
+      <div class="lane-controls">
+        <button type="button" class="icon-btn move-btn" id="btn-lane-left" aria-label="Đổi làn trái">◀</button>
+        <button type="button" class="icon-btn move-btn" id="btn-jump" aria-label="Bay qua vật cản">⤴</button>
+        <button type="button" class="icon-btn move-btn" id="btn-lane-right" aria-label="Đổi làn phải">▶</button>
+      </div>
+      <button type="button" class="btn btn-primary btn-finish" id="btn-goto-quiz">Vào Cổng Toán Học</button>
+    </div>
+
+    <div class="modal-backdrop" id="pause-backdrop" hidden>
+      <div class="modal pause-modal" role="dialog" aria-modal="true" aria-labelledby="pause-title">
+        <h2 id="pause-title">Tạm dừng</h2>
+        <button type="button" class="btn btn-primary" id="btn-resume">Tiếp tục</button>
+        <button type="button" class="btn btn-secondary" id="btn-restart-level">
+          <span aria-hidden="true">↻</span> Chơi lại
+        </button>
+        <button type="button" class="btn btn-secondary" id="btn-pause-to-menu">
+          <span aria-hidden="true">🗺</span> Về bản đồ
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-quiz" class="screen" aria-label="Cổng Toán Học">
+    <div class="quiz-topbar">
+      <button type="button" class="icon-btn quiz-exit-btn" id="btn-quiz-exit" aria-label="Thoát cổng toán học">✕</button>
+      <div class="quiz-progress" id="quiz-progress" aria-label="Tiến độ câu hỏi"></div>
+      <div class="quiz-count" id="quiz-count">Câu 1/10</div>
+    </div>
+
+    <div class="quiz-body">
+      <div class="equation-row">
+        <div class="equation" id="quiz-equation">6 + 8 = ?</div>
+        <button type="button" class="icon-btn speaker-btn" id="btn-speak" aria-label="Nghe câu hỏi">🔊</button>
+      </div>
+
+      <div class="answer-field" id="answer-field" aria-live="polite">
+        <span id="answer-text">&nbsp;</span>
+      </div>
+
+      <div class="feedback-band" id="feedback-band" aria-live="polite"></div>
+
+      <div class="keypad" id="keypad">
+        <button type="button" class="key" data-key="1">1</button>
+        <button type="button" class="key" data-key="2">2</button>
+        <button type="button" class="key" data-key="3">3</button>
+        <button type="button" class="key" data-key="4">4</button>
+        <button type="button" class="key" data-key="5">5</button>
+        <button type="button" class="key" data-key="6">6</button>
+        <button type="button" class="key" data-key="7">7</button>
+        <button type="button" class="key" data-key="8">8</button>
+        <button type="button" class="key" data-key="9">9</button>
+        <button type="button" class="key key-delete" data-key="delete" aria-label="Xóa">⌫</button>
+        <button type="button" class="key" data-key="0">0</button>
+        <button type="button" class="key key-submit" id="btn-submit" data-key="submit">Trả lời</button>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="quiz-exit-backdrop" hidden>
+      <div class="modal" role="dialog" aria-modal="true" aria-labelledby="quiz-exit-title">
+        <h2 id="quiz-exit-title">Thoát Cổng Toán Học?</h2>
+        <p>Câu trả lời hiện tại sẽ không được lưu.</p>
+        <button type="button" class="btn btn-primary" id="btn-quiz-exit-cancel">Tiếp tục làm bài</button>
+        <button type="button" class="btn btn-secondary" id="btn-quiz-exit-confirm">
+          <span aria-hidden="true">🗺</span> Về bản đồ
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="screen-result-pass" class="screen" aria-label="Kết quả">
+    <div class="result-content" id="result-content">
+      <!-- filled by app.js: pass (DES-08) or retry stand-in -->
+    </div>
+  </section>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
