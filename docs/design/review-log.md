@@ -3,7 +3,7 @@
 ## Status
 
 - Stage: full prototype — DES-01 through DES-11 built, approved vertical slice expanded per owner request
-- Selected direction: **Direction A — Xưởng Khám Phá Sắc Màu** (confirmed default per `UI_DESIGN_BRIEF.md` §4: "Start with Direction A... should not replace Direction A without explicit approval." No material interface change is being proposed, so work proceeds without blocking on owner sign-off; see comparison table below.)
+- Selected direction: **Direction A — Xưởng Khám Phá Sắc Màu** — explicitly approved by the owner (see `UIR-002` under "Decisions confirmed by owner"); see comparison table below for the original rationale.
 - Production UI implementation: not started
 - Prototype: all 11 design states built under `prototype/`, screenshots captured at both viewports in `docs/design/screenshots/`
 
@@ -53,14 +53,13 @@ No hard contradictions between `APP_SPEC.md` and `UI_DESIGN_BRIEF.md`/`IMPLEMENT
 | UIR-009 | Does 2nd-attempt-correct count toward 8/10? | No — only 1st-attempt-correct counts; 2nd-attempt-correct still unblocks continuation. This is a scoring/learning-rule decision, confirmed by the owner rather than assumed. | QuizGate scoring, DES-10 accuracy stats |
 | UIR-010 | Star-reward formula for a passed gate | 8/10=1★, 9/10=2★, 10/10=3★ (linear mapping) | DES-08 |
 | UIR-023 | Is the DES-10 "design QA tools" button an acceptable way to make DES-11 clickable? | Yes — kept as-is. Confirmed acceptable since it's clearly labeled non-production and is the only way to demo DES-11 without real file I/O. | DES-10, DES-11 |
+| UIR-002 | Approve visual Direction A or choose B | **Direction A approved** — explicitly confirmed by the owner both before the vertical-slice pass and again before the full DES-01–11 expansion ("The visual direction and vertical prototype are approved"). No Direction B work was built. | Art style and component tone |
+| UIR-007 | Mascot presence during live gameplay | Hidden during DES-04, shown elsewhere. No objection raised when reviewed — accepted as-is. | DES-04 layout |
+| UIR-008 | Level-10 (final) pass state content | Resolved via UIR-020 (distinct "hoàn thành mọi vùng đất" copy, no next-level teaser). No objection raised when reviewed — accepted as-is. | DES-08/DES-02 |
 
 ## Open decisions
 
-| ID | Decision | Default if unanswered | Impact |
-|---|---|---|---|
-| UIR-002 | Approve visual Direction A or choose B | Direction A (see comparison above) — already approved by the owner for the vertical-slice and full-expansion passes | Art style and component tone |
-| UIR-007 | Mascot presence during live gameplay | Hidden during DES-04, shown elsewhere | DES-04 layout |
-| UIR-008 | Level-10 (final) pass state content | Resolved via UIR-020 (distinct "hoàn thành mọi vùng đất" copy, no next-level teaser) | DES-08/DES-02 |
+None remaining — all `UIR-*` items above have an owner-confirmed answer or an accepted default. New ones will be added here as they come up in future review rounds.
 
 ## Prototype scope note (vertical-slice pass)
 
