@@ -1,0 +1,6 @@
+# Godot 4 generated cache/import data.
+.godot/
+*.import
+
+# Build output (APKs are delivered separately, not committed to git).
+build/
